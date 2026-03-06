@@ -1,5 +1,9 @@
 # MyGhostty – Ghostty Installer & Configuration
 
+![Version](https://img.shields.io/github/v/release/devSagarSardar/MyGhostty)
+![License](https://img.shields.io/github/license/devSagarSardar/MyGhostty)
+![Stars](https://img.shields.io/github/stars/devSagarSardar/MyGhostty)
+
 A simple and interactive installer for Ghostty that automatically installs Ghostty, applies a customized configuration, themes, and shell integration across major Linux distributions.
 
 The installer provides a quick and convenient way to set up a clean Ghostty environment without manual configuration.
