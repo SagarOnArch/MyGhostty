@@ -30,7 +30,7 @@ error() { echo -e "${RED}[ERROR]${NC} $1"; exit 1; }
 # --- Directory Setup ---
 CONFIG_DIR="$HOME/.config/ghostty"
 REPO_DIR="$HOME/.cache/myghostty"
-REPO_URL="#--github link--"
+REPO_URL="https://github.com/devSagarSardar/MyGhostty.git"
 
 # --- Script Initialization ---
 info "Starting Ghostty Installation..."
