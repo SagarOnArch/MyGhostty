@@ -41,6 +41,8 @@ For other distributions, you can manually install Ghostty and then run the insta
 
 See the official Ghostty installation guide: https://ghostty.org/docs/install/binary
 
+And to apply the configurations replace default config file with MyGhostty/config and paste theme folder into that directory.
+
 ## Features
 
 - Automated interactive Ghostty installation
@@ -58,8 +60,6 @@ See the official Ghostty installation guide: https://ghostty.org/docs/install/bi
 Thanks to the developers of the following projects that inspired this setup:
 
 - https://github.com/ghostty-org/ghostty
-
-- https://github.com/hyprwm/Hyprland
 
 - https://github.com/mylinuxforwork
 
