@@ -51,23 +51,41 @@ else
             info "$DISTRO detected. Installing base dependencies..."
             sudo pacman -S --needed --noconfirm git ghostty
             success "Ghostty installation complete"
-         elif command -v dnf &> /dev/null; then
+            info "Installing JetBrainsMono Nerd Font..."
+            sudo pacman -S --needed --noconfirm ttf-jetbrains-mono-nerd
+            success "JetBrainsMono Nerd Font installed"
+        elif command -v dnf &> /dev/null; then
             DISTRO="fedora"
             info "$DISTRO detected. Installing base dependencies..."
             sudo dnf install -y git ghostty
             success "Ghostty installation complete"
+            info "Installing JetBrainsMono Nerd Font..."
+            sudo dnf install -y jetbrains-mono-fonts
+            success "JetBrainsMono Nerd Font installed"
         elif command -v zypper &> /dev/null; then
             DISTRO="opensuse"
             info "$DISTRO detected. Installing base dependencies..."
             sudo zypper install -y git ghostty
             success "Ghostty installation complete"
+            info "Installing JetBrainsMono Nerd Font..."
+            sudo zypper install -y jetbrains-mono-fonts
+            success "JetBrainsMono Nerd Font installed"
         elif command -v apt &> /dev/null; then
             DISTRO="debian"
             info "$DISTRO detected. Installing base dependencies..."
             sudo apt update && sudo apt install -y git ghostty
             success "Ghostty installation complete"
+            info "Installing JetBrainsMono Nerd Font..."
+            FONT_DIR="$HOME/.local/share/fonts/JetBrainsMono"
+            mkdir -p "$FONT_DIR"
+            curl -fLo "/tmp/JetBrainsMono.zip" \
+                "https://github.com/ryanoasis/nerd-fonts/releases/latest/download/JetBrainsMono.zip"
+            unzip -o /tmp/JetBrainsMono.zip -d "$FONT_DIR"
+            fc-cache -fv
+            rm /tmp/JetBrainsMono.zip
+            success "JetBrainsMono Nerd Font installed"
         else
-            error "Unsupported distribution. Please install git & ghostty manually."
+            error "Unsupported distribution. Please install git, ghostty & JetBrainsMono Nerd Font manually."
         fi
     else
         error "Ghostty required. Exiting."
@@ -86,13 +104,13 @@ if [[ $config_choice == "y" ]]; then
         git clone --depth 1 --branch "$TAG" "$REPO_URL" "$REPO_DIR" 
     fi
 
-    mkdir -p "$CONFIG_DIR"
-
     if [[ -f "$CONFIG_DIR/config" ]]; then
-        BACKUP="$CONFIG_DIR/config.bak.$(date +%Y%m%d_%H%M%S)"
-        warn "Existing config detected. Creating backup: $BACKUP"
-        cp "$CONFIG_DIR/config" "$BACKUP"
-        success "Backup saved to: $BACKUP"
+        mv "$CONFIG_DIR/config" "$CONFIG_DIR/config.bak"
+        warn "Existing config detected. Creating backup: $CONFIG_DIR/config.bak"
+        success "Backup saved to: $CONFIG_DIR/config.bak"
+    else 
+        mkdir -p "$CONFIG_DIR"
+        success "Config directory created: $CONFIG_DIR"
     fi
 
     cp "$REPO_DIR/config" "$CONFIG_DIR/config"
@@ -104,10 +122,11 @@ fi
 
 # --- Theme Installation ---
 
-read -rp "Install Matugen theme? (y/n): " theme_choice
-theme_choice=${theme_choice,,}
+if [[ $config_choice == "y" ]]; then
+    read -rp "Install Matugen theme? (y/n): " theme_choice
+    theme_choice=${theme_choice,,}
 
-if [[ $theme_choice == "y" ]]; then
+    if [[ $theme_choice == "y" ]]; then
 
     mkdir -p "$CONFIG_DIR/themes"
 
@@ -115,11 +134,39 @@ if [[ $theme_choice == "y" ]]; then
 
     success "Theme installed"
 
-else
+    else
 
     warn "Skipping theme..."
     sed -i '/^theme *=/d' "$CONFIG_DIR/config"
 
+    fi
+else
+    read -rp "Install Matugen theme? (y/n): " theme_choice
+    theme_choice=${theme_choice,,}
+
+    if [[ $theme_choice == "y" ]]; then
+        if [[ ! -d "$CONFIG_DIR/themes" ]]; then
+            mkdir -p "$CONFIG_DIR/themes"
+            success "Theme directory created: $CONFIG_DIR/themes"
+            sed -i '/^theme *=/d' "$CONFIG_DIR/config"
+            success " Exiting theme configuration removed"
+        else
+            mv "$CONFIG_DIR/themes" "$CONFIG_DIR/themes.bak"
+            warn "Existing themes detected. Creating backup: $CONFIG_DIR/themes.bak"
+            success "Backup saved to: $CONFIG_DIR/themes.bak"
+            mkdir -p "$CONFIG_DIR/themes"
+            success "Theme directory created: $CONFIG_DIR/themes"
+            sed -i '/^theme *=/d' "$CONFIG_DIR/config"
+            success " Exiting theme configuration removed"
+        fi
+        cp -r "$REPO_DIR/themes/ml4w-matugen" "$CONFIG_DIR/themes/"
+        success "Theme installed"
+        # Add theme to config
+        echo "theme = \"ml4w-matugen\"" >> "$CONFIG_DIR/config"
+        success "Theme added to config"
+    else
+        warn "Skipping theme..."
+    fi
 fi
 
 # --- Shell Detection & Shell Integration ---
