@@ -88,6 +88,13 @@ if [[ $config_choice == "y" ]]; then
 
     mkdir -p "$CONFIG_DIR"
 
+    if [[ -f "$CONFIG_DIR/config" ]]; then
+        BACKUP="$CONFIG_DIR/config.bak.$(date +%Y%m%d_%H%M%S)"
+        warn "Existing config detected. Creating backup: $BACKUP"
+        cp "$CONFIG_DIR/config" "$BACKUP"
+        success "Backup saved to: $BACKUP"
+    fi
+
     cp "$REPO_DIR/config" "$CONFIG_DIR/config"
 
     success "Config installed to:"
