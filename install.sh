@@ -19,7 +19,7 @@ YELLOW='\033[1;33m'
 RED='\033[0;31m'
 NC='\033[0m'
 
-TAG="0.1.0"
+TAG="0.1.1"
 
 # --- UI ---
 info() { echo -e "${BLUE}[BOOTSTRAP]${NC} $1"; }
@@ -31,6 +31,7 @@ error() { echo -e "${RED}[ERROR]${NC} $1"; exit 1; }
 CONFIG_DIR="$HOME/.config/ghostty"
 REPO_DIR="$HOME/.cache/myghostty"
 REPO_URL="https://github.com/devSagarSardar/MyGhostty.git"
+BIN_DIR="$HOME/.local/bin"
 
 # --- Script Initialization ---
 info "Starting Ghostty Installation..."
@@ -169,6 +170,25 @@ else
     fi
 fi
 
+# --- Install myghostty-update command ---
+
+if [[ ! -d "$BIN_DIR" ]]; then
+    mkdir -p "$BIN_DIR"
+    success "Created $BIN_DIR"
+fi
+cp "$REPO_DIR/update.sh" "$BIN_DIR/myghostty-update"
+chmod +x "$BIN_DIR/myghostty-update"
+success "myghostty-update installed to $BIN_DIR/myghostty-update"
+
+if [[ ":$PATH:" != *":$BIN_DIR:"* ]]; then
+    warn "~/.local/bin is not in your PATH."
+    warn "Add this to your shell config (e.g. ~/.bashrc or ~/.zshrc):"
+    echo -e "  ${BLUE}export PATH=\"\$HOME/.local/bin:\$PATH\"${NC}"
+fi
+
+echo ""
+success "Ghosty setup complete!"
+
 # --- Shell Detection & Shell Integration ---
 
 shell_name=$(basename "$SHELL")
@@ -194,10 +214,6 @@ if [[ $default_choice == "y" ]]; then
 else
     warn "Skipping default terminal setup..."
 fi
-
-echo ""
-success "Ghosty setup complete!"
-
 
 # --- Cleanup ---
 
