@@ -1,37 +1,53 @@
-# MyGhostty – Ghostty Installer & Configuration
+<div align="center">
 
-![Version](https://img.shields.io/github/v/release/devSagarSardar/MyGhostty)
-![License](https://img.shields.io/github/license/devSagarSardar/MyGhostty)
-![Stars](https://img.shields.io/github/stars/devSagarSardar/MyGhostty)
-[![❤️ GitHub Sponsors ](https://img.shields.io/badge/Sponsor-GitHub-%23EA4AAA?logo=githubsponsors)](https://github.com/sponsors/devSagarSardar)
+# 👻 MyGhostty
 
-A simple and interactive installer for Ghostty that automatically installs Ghostty, applies a customized configuration, themes, and shell integration across major Linux distributions.
+### _A blazing-fast Ghostty installer & configuration toolkit for Linux_
 
-The installer provides a quick and convenient way to set up a clean Ghostty environment without manual configuration.
+<br/>
+
+![Version](https://img.shields.io/github/v/release/devSagarSardar/MyGhostty?style=for-the-badge&color=7c3aed&labelColor=0f0f12)
+![License](https://img.shields.io/github/license/devSagarSardar/MyGhostty?style=for-the-badge&color=06b6d4&labelColor=0f0f12)
+![Stars](https://img.shields.io/github/stars/devSagarSardar/MyGhostty?style=for-the-badge&color=f59e0b&labelColor=0f0f12)
+[![Sponsor](https://img.shields.io/badge/❤️_Sponsor-GitHub-%23EA4AAA?style=for-the-badge&logo=githubsponsors&labelColor=0f0f12)](https://github.com/sponsors/devSagarSardar)
+
+<br/>
 
 ![Ghostty Preview](assets/preview.png)
 
-## Installation
+</div>
 
-### Quick Install
+---
+
+## ✨ What is MyGhostty?
+
+**MyGhostty** is a smart, interactive installer that sets up [Ghostty](https://ghostty.org/) — the fast, feature-rich terminal — with a hand-crafted configuration, themes, and shell integration across all major Linux distributions. Zero manual config needed.
+
+---
+
+## ⚡ Quick Install
 
 ```sh
 bash <(curl -s https://raw.githubusercontent.com/devSagarSardar/MyGhostty/main/install.sh)
 ```
 
-The installer will interactively guide you through:
+The installer interactively walks you through everything:
 
-- **Ghostty** — installs if not already present
-- **JetBrainsMono Nerd Font** — installed automatically as a dependency
-- **Configuration** — applies the MyGhostty config (backs up any existing config)
-- **Theme** — installs the `ml4w-matugen` theme
-- **Shell integration** — auto-detected (bash / zsh / fish)
-- **Default terminal** — optionally sets Ghostty as your system default
-- **`myghostty-update` command** — installed to `~/.local/bin` for future updates
+| Step | What It Does |
+|------|-------------|
+| 👻 **Ghostty** | Installs if not already present |
+| 🔤 **JetBrainsMono Nerd Font** | Installed automatically as a dependency |
+| ⚙️ **Configuration** | Applies the MyGhostty config (auto-backs up existing) |
+| 🎨 **Theme** | Installs the `ml4w-matugen` theme |
+| 🐚 **Shell Integration** | Auto-detected — bash / zsh / fish |
+| 🖥️ **Default Terminal** | Optionally sets Ghostty as your system default |
+| 🔄 **`myghostty-update`** | Installed to `~/.local/bin` for future updates |
 
-## Keeping Up to Date
+---
 
-After the initial install, a `myghostty-update` command is available globally. Run it anytime the repo is updated to pull the latest changes and reapply your config and theme:
+## 🔄 Keeping Up to Date
+
+After the initial install, a global `myghostty-update` command is available. Run it anytime to pull the latest changes:
 
 ```sh
 myghostty-update
@@ -40,139 +56,62 @@ myghostty-update
 This will:
 1. Pull the latest version from the repository
 2. Back up your existing config (timestamped `.bak` file)
-3. Apply the updated config
+3. Apply the updated configuration
 4. Update the `ml4w-matugen` theme (if installed)
 5. Re-apply your shell integration setting
 
-> **Note:** If `~/.local/bin` is not on your `$PATH`, the installer will print the export line to add to your shell config (e.g. `~/.bashrc` or `~/.zshrc`).
+> [!NOTE]
+> If `~/.local/bin` is not on your `$PATH`, the installer will print the `export` line to add to your shell config (e.g. `~/.bashrc` or `~/.zshrc`).
 
-## Features
+---
 
-- Automated interactive Ghostty installation
-- JetBrainsMono Nerd Font included as a dependency
-- Custom Ghostty configuration with auto-backup
-- Matugen theme support
-- Automatic shell detection (bash / zsh / fish)
-- Optional default terminal setup
-- `myghostty-update` command for seamless future updates
+## 🚀 Features
 
-### Supported Distributions
+- ⚡ Automated interactive Ghostty installation
+- 🔤 JetBrainsMono Nerd Font bundled as a dependency
+- ⚙️ Custom Ghostty configuration with automatic backup
+- 🎨 Matugen theme support out of the box
+- 🐚 Automatic shell detection (bash / zsh / fish)
+- 🖥️ Optional default terminal setup
+- 🔄 `myghostty-update` command for seamless future updates
+
+---
+
+## 🐧 Supported Distributions
 
 | Distribution | Package Manager |
-|---|---|
+|---|:---:|
 | Arch Linux | `pacman` |
 | Fedora | `dnf` |
 | openSUSE | `zypper` |
 | Debian / Ubuntu | `apt` |
 
-For other distributions, install Ghostty manually — see the [official guide](https://ghostty.org/docs/install/binary) — then re-run the installer to apply the configuration and theme.
+> [!TIP]
+> For other distributions, install Ghostty manually via the [official guide](https://ghostty.org/docs/install/binary), then re-run the installer to apply the configuration and theme.
 
-**Note:** MyGhostty required JetBrainsMono Nerd Font to be installed on your system. To install it manually, see the [official guide](https://github.com/JetBrains/JetBrainsMono).
+> [!IMPORTANT]
+> MyGhostty requires **JetBrainsMono Nerd Font** to be installed on your system. To install it manually, see the [official JetBrains repository](https://github.com/JetBrains/JetBrainsMono).
 
+---
 
-## Acknowledgements & Credits
+## 🙏 Acknowledgements & Credits
 
-Thanks to the developers of the following projects that inspired this setup and provided the necessary resources:
+Thanks to the developers of these amazing projects:
 
-- https://github.com/ghostty-org/ghostty
-- https://github.com/mylinuxforwork
-- https://github.com/JetBrains/JetBrainsMono
+- [ghostty-org/ghostty](https://github.com/ghostty-org/ghostty) — the terminal itself
+- [mylinuxforwork](https://github.com/mylinuxforwork) — theme and configuration inspiration
+- [JetBrains/JetBrainsMono](https://github.com/JetBrains/JetBrainsMono) — the beautiful font
 
-## Contributions & Support
+---
 
-Contributions, suggestions, and improvements are welcome.
+## 🤝 Contributions & Support
 
-Feel free to open issues or submit pull requests.
+Contributions, suggestions, and improvements are welcome!
 
-If you find this project useful, consider supporting development.
+Feel free to **open issues** or **submit pull requests**. If you find this project useful, consider supporting development:
 
-# MyGhostty – Ghostty Installer & Configuration
+<div align="center">
 
-![Version](https://img.shields.io/github/v/release/devSagarSardar/MyGhostty)
-![License](https://img.shields.io/github/license/devSagarSardar/MyGhostty)
-![Stars](https://img.shields.io/github/stars/devSagarSardar/MyGhostty)
-[![❤️ GitHub Sponsors ](https://img.shields.io/badge/Sponsor-GitHub-%23EA4AAA?logo=githubsponsors)](https://github.com/sponsors/devSagarSardar)
+[![❤️ GitHub Sponsors](https://img.shields.io/badge/❤️_Sponsor_MyGhostty-GitHub-%23EA4AAA?style=for-the-badge&logo=githubsponsors&labelColor=0f0f12)](https://github.com/sponsors/devSagarSardar)
 
-A simple and interactive installer for Ghostty that automatically installs Ghostty, applies a customized configuration, themes, and shell integration across major Linux distributions.
-
-The installer provides a quick and convenient way to set up a clean Ghostty environment without manual configuration.
-
-![Ghostty Preview](assets/preview.png)
-
-## Installation
-
-### Quick Install
-
-```sh
-bash <(curl -s https://raw.githubusercontent.com/devSagarSardar/MyGhostty/main/install.sh)
-```
-
-The installer will interactively guide you through:
-
-- **Ghostty** — installs if not already present
-- **JetBrainsMono Nerd Font** — installed automatically as a dependency
-- **Configuration** — applies the MyGhostty config (backs up any existing config)
-- **Theme** — installs the `ml4w-matugen` theme
-- **Shell integration** — auto-detected (bash / zsh / fish)
-- **Default terminal** — optionally sets Ghostty as your system default
-- **`myghostty-update` command** — installed to `~/.local/bin` for future updates
-
-## Keeping Up to Date
-
-After the initial install, a `myghostty-update` command is available globally. Run it anytime the repo is updated to pull the latest changes and reapply your config and theme:
-
-```sh
-myghostty-update
-```
-
-This will:
-1. Pull the latest version from the repository
-2. Back up your existing config (timestamped `.bak` file)
-3. Apply the updated config
-4. Update the `ml4w-matugen` theme (if installed)
-5. Re-apply your shell integration setting
-
-> **Note:** If `~/.local/bin` is not on your `$PATH`, the installer will print the export line to add to your shell config (e.g. `~/.bashrc` or `~/.zshrc`).
-
-## Features
-
-- Automated interactive Ghostty installation
-- JetBrainsMono Nerd Font included as a dependency
-- Custom Ghostty configuration with auto-backup
-- Matugen theme support
-- Automatic shell detection (bash / zsh / fish)
-- Optional default terminal setup
-- `myghostty-update` command for seamless future updates
-
-### Supported Distributions
-
-| Distribution | Package Manager |
-|---|---|
-| Arch Linux | `pacman` |
-| Fedora | `dnf` |
-| openSUSE | `zypper` |
-| Debian / Ubuntu | `apt` |
-
-For other distributions, install Ghostty manually — see the [official guide](https://ghostty.org/docs/install/binary) — then re-run the installer to apply the configuration and theme.
-
-**Note:** MyGhostty required JetBrainsMono Nerd Font to be installed on your system. To install it manually, see the [official guide](https://github.com/JetBrains/JetBrainsMono).
-
-
-## Acknowledgements & Credits
-
-Thanks to the developers of the following projects that inspired this setup and provided the necessary resources:
-
-- https://github.com/ghostty-org/ghostty
-- https://github.com/mylinuxforwork
-- https://github.com/JetBrains/JetBrainsMono
-
-## Contributions & Support
-
-Contributions, suggestions, and improvements are welcome.
-
-Feel free to open issues or submit pull requests.
-
-If you find this project useful, consider supporting development.
-
-[![❤️ GitHub Sponsors ](https://img.shields.io/badge/Sponsor-GitHub-%23EA4AAA?logo=githubsponsors)](https://github.com/sponsors/devSagarSardar) https://github.com/sponsors/devSagarSardar
-
+</div>
