@@ -25,13 +25,21 @@
 
 ---
 
-## ⚡ Quick Install
+## Recommended ⚡ Quick Install Command for Beginners
+
+```sh
+bash <(curl -s https://raw.githubusercontent.com/devSagarSardar/MyGhostty/main/install.sh) --yes
+```
+## Advanced Install Command for Experts
 
 ```sh
 bash <(curl -s https://raw.githubusercontent.com/devSagarSardar/MyGhostty/main/install.sh)
 ```
 
-The installer interactively walks you through everything:
+The installer interactively walks you through everything. You can also run it unattended using CLI parameters:
+- `--yes` or `-y`: Auto-accept all prompts.
+- `--minimal` or `-m`: Skip downloading and installing the Matugen theme.
+
 
 | Step | What It Does |
 |------|-------------|
@@ -55,10 +63,41 @@ myghostty-update
 
 This will:
 1. Pull the latest version from the repository
-2. Back up your existing config (timestamped `.bak` file)
-3. Apply the updated configuration
-4. Update the `ml4w-matugen` theme (if installed)
+2. Back up your existing `config` and `config.d` (timestamped `.bak` folders)
+3. Apply the updated configuration and modular `config.d` components
+4. Update the `ml4w-matugen` theme (if installed and not restricted by minimal mode)
 5. Re-apply your shell integration setting
+
+---
+
+## 📁 Modular Configuration (`config.d`)
+
+MyGhostty uses a modular `.conf` file approach to keep settings organized instead of a single massive config file. Everything is housed inside `$HOME/.config/ghostty/config.d/`:
+
+- **`core.conf`**: Houses core terminal setup and shell integration.
+- **`fonts.conf`**: Manages typeface, sizing, and ligatures.
+- **`keybindings.conf`**: Custom hotkeys and shortcuts.
+- **`appearance.conf`**: Padding, opacity, window snapping, blur, etc.
+- **`theme.conf`**: Holds the selected color theme.
+- **`custom.conf`**: Your personal sandbox. Add any custom configurations or overrides here safely.
+
+> [!TIP]
+> If you wish to change settings, add them to `config.d/custom.conf`! This ensures your custom overrides won't conflict with MyGhostty's base structures during updates.
+
+---
+
+## ⌨️ Custom Keybindings
+
+MyGhostty comes with some intuitive keybindings configured out of the box in `config.d/keybindings.conf`:
+
+| Shortcut | Action |
+|----------|--------|
+| <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>c</kbd> | Copy to clipboard |
+| <kbd>Ctrl</kbd> + <kbd>g</kbd> > <kbd>g</kbd> | Scroll to top (Vim style) |
+| <kbd>Shift</kbd> + <kbd>g</kbd> > <kbd>g</kbd> | Scroll to bottom (Vim style) |
+
+> [!TIP]
+> You can add your own keybindings by editing `$HOME/.config/ghostty/config.d/keybindings.conf`.
 
 > [!NOTE]
 > If `~/.local/bin` is not on your `$PATH`, the installer will print the `export` line to add to your shell config (e.g. `~/.bashrc` or `~/.zshrc`).

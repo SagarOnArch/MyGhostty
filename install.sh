@@ -19,13 +19,45 @@ YELLOW='\033[1;33m'
 RED='\033[0;31m'
 NC='\033[0m'
 
-TAG="0.1.1"
+TAG="0.1.2"
 
 # --- UI ---
 info() { echo -e "${BLUE}[BOOTSTRAP]${NC} $1"; }
 success() { echo -e "${GREEN}[SUCCESS]${NC} $1"; }
 warn() { echo -e "${YELLOW}[WARN]${NC} $1"; }
 error() { echo -e "${RED}[ERROR]${NC} $1"; exit 1; }
+
+TOTAL_STEPS=7
+CURRENT_STEP=1
+step_info() { echo -e "\n${BLUE}[BOOTSTRAP]${NC} [Step ${CURRENT_STEP}/${TOTAL_STEPS}] $1"; ((CURRENT_STEP++)); }
+
+# --- Argument Parsing ---
+AUTO_YES=false
+MINIMAL=false
+
+for arg in "$@"; do
+    case $arg in
+        --yes|-y)
+            AUTO_YES=true
+            ;;
+        --minimal|-m)
+            MINIMAL=true
+            ;;
+    esac
+done
+
+ask_yes_no() {
+    local prompt="$1"
+    local var_name="$2"
+    if [[ "$AUTO_YES" == true ]]; then
+        info "$prompt y (auto)"
+        eval "$var_name='y'"
+    else
+        sleep 1
+        read -rp "$prompt " input
+        eval "$var_name=\"\${input,,}\""
+    fi
+}
 
 # --- Directory Setup ---
 CONFIG_DIR="$HOME/.config/ghostty"
@@ -38,13 +70,13 @@ info "Starting Ghostty Installation..."
 
 # --- Distro Detection & Ghostty Installation ---
 
+step_info "Ghostty Installation & Dependencies"
 if command -v ghostty >/dev/null 2>&1; then
     success "Ghostty already installed"
 else
     warn "Ghostty not found"
 
-    read -rp "Install Ghostty? (y/n): " install
-    install=${install,,}
+    ask_yes_no "Install Ghostty? (y/n):" install
 
     if [[ $install == "y" ]]; then
         if command -v pacman &> /dev/null; then
@@ -95,14 +127,20 @@ fi
 
 # --- Config Installation ---
 
-read -rp "Install Ghostty config? (y/n): " config_choice
-config_choice=${config_choice,,}
+step_info "Ghostty Configuration"
+ask_yes_no "Install Ghostty config? (y/n):" config_choice
 
 if [[ $config_choice == "y" ]]; then
 
     if [[ ! -d "$REPO_DIR" ]]; then 
         info "Downloading Ghostty configuration repository..." 
         git clone --depth 1 --branch "$TAG" "$REPO_URL" "$REPO_DIR" 
+    fi
+
+    if [[ -d "$CONFIG_DIR/config.d" ]]; then
+        mv "$CONFIG_DIR/config.d" "$CONFIG_DIR/config.d.bak"
+        warn "Existing config.d detected. Creating backup: $CONFIG_DIR/config.d.bak"
+        success "Backup saved to: $CONFIG_DIR/config.d.bak"
     fi
 
     if [[ -f "$CONFIG_DIR/config" ]]; then
@@ -115,6 +153,7 @@ if [[ $config_choice == "y" ]]; then
     fi
 
     cp "$REPO_DIR/config" "$CONFIG_DIR/config"
+    cp -r "$REPO_DIR/config.d" "$CONFIG_DIR/config.d"
 
     success "Config installed to:"
     info "$CONFIG_DIR/config"
@@ -123,9 +162,14 @@ fi
 
 # --- Theme Installation ---
 
+step_info "Theme Installation"
 if [[ $config_choice == "y" ]]; then
-    read -rp "Install Matugen theme? (y/n): " theme_choice
-    theme_choice=${theme_choice,,}
+    if [[ "$MINIMAL" == true ]]; then
+        info "Install Matugen theme? (y/n): n (minimal mode)"
+        theme_choice="n"
+    else
+        ask_yes_no "Install Matugen theme? (y/n):" theme_choice
+    fi
 
     if [[ $theme_choice == "y" ]]; then
 
@@ -138,32 +182,36 @@ if [[ $config_choice == "y" ]]; then
     else
 
     warn "Skipping theme..."
-    sed -i '/^theme *=/d' "$CONFIG_DIR/config"
+    sed -i '/^theme *=/d' "$CONFIG_DIR/config.d/theme.conf"
 
     fi
 else
-    read -rp "Install Matugen theme? (y/n): " theme_choice
-    theme_choice=${theme_choice,,}
+    if [[ "$MINIMAL" == true ]]; then
+        info "Install Matugen theme? (y/n): n (minimal mode)"
+        theme_choice="n"
+    else
+        ask_yes_no "Install Matugen theme? (y/n):" theme_choice
+    fi
 
     if [[ $theme_choice == "y" ]]; then
         if [[ ! -d "$CONFIG_DIR/themes" ]]; then
             mkdir -p "$CONFIG_DIR/themes"
             success "Theme directory created: $CONFIG_DIR/themes"
-            sed -i '/^theme *=/d' "$CONFIG_DIR/config"
-            success " Exiting theme configuration removed"
+            sed -i '/^theme *=/d' "$CONFIG_DIR/config.d/theme.conf"
+            success " Existing theme configuration removed"
         else
             mv "$CONFIG_DIR/themes" "$CONFIG_DIR/themes.bak"
             warn "Existing themes detected. Creating backup: $CONFIG_DIR/themes.bak"
             success "Backup saved to: $CONFIG_DIR/themes.bak"
             mkdir -p "$CONFIG_DIR/themes"
             success "Theme directory created: $CONFIG_DIR/themes"
-            sed -i '/^theme *=/d' "$CONFIG_DIR/config"
-            success " Exiting theme configuration removed"
+            sed -i '/^theme *=/d' "$CONFIG_DIR/config.d/theme.conf"
+            success " Existing theme configuration removed"
         fi
         cp -r "$REPO_DIR/themes/ml4w-matugen" "$CONFIG_DIR/themes/"
         success "Theme installed"
         # Add theme to config
-        echo "theme = \"ml4w-matugen\"" >> "$CONFIG_DIR/config"
+        echo "theme = \"ml4w-matugen\"" >> "$CONFIG_DIR/config.d/theme.conf"
         success "Theme added to config"
     else
         warn "Skipping theme..."
@@ -172,6 +220,7 @@ fi
 
 # --- Install myghostty-update command ---
 
+step_info "Installing Update Script"
 if [[ ! -d "$BIN_DIR" ]]; then
     mkdir -p "$BIN_DIR"
     success "Created $BIN_DIR"
@@ -186,23 +235,21 @@ if [[ ":$PATH:" != *":$BIN_DIR:"* ]]; then
     echo -e "  ${BLUE}export PATH=\"\$HOME/.local/bin:\$PATH\"${NC}"
 fi
 
-echo ""
-success "Ghosty setup complete!"
-
 # --- Shell Detection & Shell Integration ---
 
+step_info "Shell Integration"
 shell_name=$(basename "$SHELL")
 
 info "Detected shell: $shell_name"
 
-sed -i "s/^shell-integration = .*/shell-integration = $shell_name/" "$CONFIG_DIR/config"
+sed -i "s/^shell-integration = .*/shell-integration = $shell_name/" "$CONFIG_DIR/config.d/core.conf"
 
 success "Shell integration set to $shell_name"
 
 # --- Set Default Terminal ---
 
-read -rp "Set Ghostty as default terminal? (y/n): " default_choice
-default_choice=${default_choice,,}
+step_info "Default Terminal Setup"
+ask_yes_no "Set Ghostty as default terminal? (y/n):" default_choice
 
 if [[ $default_choice == "y" ]]; then
 
@@ -217,8 +264,8 @@ fi
 
 # --- Cleanup ---
 
-read -rp "Remove installation folder? (y/n): " cleanup
-cleanup=${cleanup,,}
+step_info "Cleanup"
+ask_yes_no "Remove installation folder? (y/n):" cleanup
 
 if [[ $cleanup == "y" ]]; then
 
@@ -230,3 +277,6 @@ if [[ $cleanup == "y" ]]; then
 else
     warn "Installer folder kept."
 fi
+
+echo ""
+success "Ghostty setup complete!"

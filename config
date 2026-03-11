@@ -4,35 +4,21 @@
 # | |_| |  _  | |_| |___) || |   | |   | |
 #  \____|_| |_|\___/|____/ |_|   |_|   |_|
 #
+
 # -----------------------------------------------------
 # Ghostty Configuration
 # -----------------------------------------------------
+config-file = config.d/core.conf
+config-file = config.d/fonts.conf
+config-file = config.d/keybindings.conf
+config-file = config.d/appearance.conf
+config-file = config.d/theme.conf
+config-file = config.d/custom.conf 
 
-font-family = "JetBrainsMono Nerd Font"
-font-size = 12
-font-feature = liga
-font-family-bold = auto
-font-family-italic = auto
-font-family-bold-italic = auto
 
-cursor-style = bar
-cursor-style-blink = true
 
-scrollback-limit = 2000
-mouse-scroll-multiplier = 1
 
-focus-follows-mouse = true
 
-bell-features = no-audio
-confirm-close-surface = false
 
-window-padding-x = 10
-window-padding-y = 10
-window-decoration = false
-background-opacity = 0.7 
 
-# Theme for Ghostty
-theme = ml4w-matugen
 
-# Shell integration
-shell-integration = bash
