@@ -62,7 +62,7 @@ ask_yes_no() {
 # --- Directory Setup ---
 CONFIG_DIR="$HOME/.config/ghostty"
 REPO_DIR="$HOME/.cache/myghostty"
-REPO_URL="https://github.com/devSagarSardar/MyGhostty.git"
+REPO_URL="https://github.com/SagarOnArch/MyGhostty.git"
 BIN_DIR="$HOME/.local/bin"
 
 # --- Script Initialization ---
@@ -224,6 +224,9 @@ step_info "Installing Update Script"
 if [[ ! -d "$BIN_DIR" ]]; then
     mkdir -p "$BIN_DIR"
     success "Created $BIN_DIR"
+fi
+if [[ $config_choice != "y" ]]; then
+    git clone --depth 1 --branch "$TAG" "$REPO_URL" "$REPO_DIR"
 fi
 cp "$REPO_DIR/update.sh" "$BIN_DIR/myghostty-update"
 chmod +x "$BIN_DIR/myghostty-update"
